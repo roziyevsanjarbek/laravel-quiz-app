@@ -11,6 +11,11 @@ Route::get('/about', function () {
     return view('about');
 });
 
+Route::get('/take-quiz', function () {
+    return view('take-quiz');
+});
+
+
 
 Route::get('/dashboard', function () {
     return view('dashboard');
