@@ -1,41 +1,7 @@
-<x-header></x-header>
+<x-home.header></x-home.header>
 <div class="bg-gray-50">
 <!-- Navigation -->
-<nav class="bg-white shadow-lg">
-    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        <div class="flex justify-between h-16">
-            <div class="flex items-center">
-                <h1 class="text-2xl font-bold text-indigo-600">Quiz App</h1>
-            </div>
-            <div class="flex items-center space-x-4">
-                <div class="hidden md:flex items-center space-x-4">
-                    <a href="#features" class="text-gray-600 hover:text-gray-900">Features</a>
-                    <a href="#how-it-works" class="text-gray-600 hover:text-gray-900">How It Works</a>
-                    <a href="login.html" class="text-gray-600 hover:text-gray-900">Login</a>
-                    <a href="add-quiz.php"
-                       class="inline-flex items-center px-4 py-2 border border-transparent text-sm font-medium rounded-md text-white bg-indigo-600 hover:bg-indigo-700">
-                        Register
-                    </a>
-                </div>
-                <div class="md:hidden flex items-center">
-                    <button class="mobile-menu-button">
-                        <i class="fas fa-bars text-gray-500 text-2xl"></i>
-                    </button>
-                </div>
-            </div>
-        </div>
-    </div>
-    <div class="hidden mobile-menu md:hidden pl-3">
-        <a href="#features" class="block my-2 text-xl text-gray-600 hover:text-gray-900">Features</a>
-        <a href="#how-it-works" class="block my-2 text-xl text-gray-600 hover:text-gray-900">How It Works</a>
-        <a href="login.html" class="block my-2 text-xl text-gray-600 hover:text-gray-900">Login</a>
-        <a href="add-quiz.php"
-           class="block my-2 text-xl inline-flex items-center px-4 py-2 border border-transparent text-sm font-medium rounded-md text-white bg-indigo-600 hover:bg-indigo-700">
-            Register
-        </a>
-    </div>
-</nav>
-
+<x-home.navbar></x-home.navbar>
 <!-- Hero Section -->
 <div class="bg-indigo-600 text-white py-20">
     <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
@@ -141,50 +107,6 @@
 </section>
 
 <!-- Footer -->
-<footer class="bg-gray-800 text-white py-12">
-    <div class="max-w-7xl mx-auto px-4 grid grid-cols-1 md:grid-cols-4 gap-8">
-        <div class="mb-8 md:mb-0">
-            <h3 class="text-2xl font-bold mb-4">QuizApp</h3>
-            <p class="text-gray-400">Making learning fun and effective through interactive quizzes.</p>
-        </div>
-        <div>
-            <h4 class="text-lg font-semibold mb-4">Quick Links</h4>
-            <ul class="space-y-2">
-                <li><a href="/" class="text-gray-400 hover:text-white">Home</a></li>
-                <li><a href="/about.html" class="text-gray-400 hover:text-white">About</a></li>
-                <li><a href="/login.html" class="text-gray-400 hover:text-white">Login</a></li>
-                <li><a href="/register.html" class="text-gray-400 hover:text-white">Register</a></li>
-            </ul>
-        </div>
-        <div>
-            <h4 class="text-lg font-semibold mb-4">Support</h4>
-            <ul class="space-y-2">
-                <li><a href="#" class="text-gray-400 hover:text-white">Help Center</a></li>
-                <li><a href="#" class="text-gray-400 hover:text-white">Contact Us</a></li>
-                <li><a href="#" class="text-gray-400 hover:text-white">Privacy Policy</a></li>
-                <li><a href="#" class="text-gray-400 hover:text-white">Terms of Service</a></li>
-            </ul>
-        </div>
-        <div>
-            <h4 class="text-lg font-semibold mb-4">Follow Us</h4>
-            <div class="flex space-x-4">
-                <a href="#" class="text-gray-400 hover:text-white"><i class="fab fa-twitter"></i></a>
-                <a href="#" class="text-gray-400 hover:text-white"><i class="fab fa-facebook"></i></a>
-                <a href="#" class="text-gray-400 hover:text-white"><i class="fab fa-instagram"></i></a>
-                <a href="#" class="text-gray-400 hover:text-white"><i class="fab fa-linkedin"></i></a>
-            </div>
-        </div>
-    </div>
-</footer>
 
-<script>
-    // Mobile menu toggle
-    const mobileMenuButton = document.querySelector('.mobile-menu-button');
-    const mobileMenu = document.querySelector('.mobile-menu');
-
-    mobileMenuButton.addEventListener('click', () => {
-        mobileMenu.classList.toggle('hidden');
-    });
-</script>
 </div>
-<x-footer></x-footer>
+<x-home.footer></x-home.footer>

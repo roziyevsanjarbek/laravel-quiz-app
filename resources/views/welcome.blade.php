@@ -1,39 +1,7 @@
-<x-header></x-header>
+<x-home.header></x-home.header>
 <div class="bg-gradient-to-b from-gray-50 to-gray-100">
-<nav class="bg-white shadow-lg">
-    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        <div class="flex justify-between h-16">
-            <div class="flex items-center">
-                <h1 class="text-2xl font-bold text-indigo-600">Quiz App</h1>
-            </div>
-            <div class="flex items-center space-x-4">
-                <div class="hidden md:flex items-center space-x-4">
-                    <a href="#features" class="text-gray-600 hover:text-gray-900">Features</a>
-                    <a href="#how-it-works" class="text-gray-600 hover:text-gray-900">How It Works</a>
-                    <a href="login.html" class="text-gray-600 hover:text-gray-900">Login</a>
-                    <a href="add-quiz.php"
-                       class="inline-flex items-center px-4 py-2 border border-transparent text-sm font-medium rounded-md text-white bg-indigo-600 hover:bg-indigo-700">
-                        Register
-                    </a>
-                </div>
-                <div class="md:hidden flex items-center">
-                    <button class="mobile-menu-button">
-                        <i class="fas fa-bars text-gray-500 text-2xl"></i>
-                    </button>
-                </div>
-            </div>
-        </div>
-    </div>
-    <div class="hidden mobile-menu md:hidden pl-3">
-        <a href="#features" class="block my-2 text-xl text-gray-600 hover:text-gray-900">Features</a>
-        <a href="#how-it-works" class="block my-2 text-xl text-gray-600 hover:text-gray-900">How It Works</a>
-        <a href="login.html" class="block my-2 text-xl text-gray-600 hover:text-gray-900">Login</a>
-        <a href="add-quiz.php"
-           class="block my-2 text-xl inline-flex items-center px-4 py-2 border border-transparent text-sm font-medium rounded-md text-white bg-indigo-600 hover:bg-indigo-700">
-            Register
-        </a>
-    </div>
-</nav>
+
+    <x-home.navbar></x-home.navbar>
 
 
 <main>
@@ -178,57 +146,10 @@
             </div>
         </div>
     </div>
-    <footer class="bg-gray-900 text-white py-12">
-        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-            <div class="grid md:grid-cols-4 gap-8">
-                <div>
-                    <h3 class="text-xl font-bold mb-4">QuizMaster</h3>
-                    <p class="text-gray-400">Making learning fun and interactive through engaging quizzes.</p>
-                </div>
-                <div>
-                    <h4 class="text-lg font-semibold mb-4">Quick Links</h4>
-                    <ul class="space-y-2">
-                        <li><a href="/" class="text-gray-400 hover:text-white">Dashboard</a></li>
-                        <li><a href="/about" class="text-gray-400 hover:text-white">About</a></li>
-                        <li><a href="/login" class="text-gray-400 hover:text-white">Login</a></li>
-                        <li><a href="/register" class="text-gray-400 hover:text-white">Register</a></li>
-                    </ul>
-                </div>
-                <div>
-                    <h4 class="text-lg font-semibold mb-4">Resources</h4>
-                    <ul class="space-y-2">
-                        <li><a href="#" class="text-gray-400 hover:text-white">Blog</a></li>
-                        <li><a href="#" class="text-gray-400 hover:text-white">Help Center</a></li>
-                        <li><a href="#" class="text-gray-400 hover:text-white">Contact</a></li>
-                    </ul>
-                </div>
-                <div>
-                    <h4 class="text-lg font-semibold mb-4">Connect</h4>
-                    <div class="flex space-x-4">
-                        <a href="#" class="text-gray-400 hover:text-white"><i class="fab fa-twitter"></i></a>
-                        <a href="#" class="text-gray-400 hover:text-white"><i class="fab fa-facebook"></i></a>
-                        <a href="#" class="text-gray-400 hover:text-white"><i class="fab fa-instagram"></i></a>
-                        <a href="#" class="text-gray-400 hover:text-white"><i class="fab fa-linkedin"></i></a>
-                    </div>
-                </div>
-            </div>
-            <div class="border-t border-gray-800 mt-8 pt-8 text-center text-gray-400">
-                <p>&copy; 2023 QuizMaster. All rights reserved.</p>
-            </div>
-        </div>
-    </footer>
-    <script>
-        // Mobile menu toggle
-        const mobileMenuButton = document.querySelector('.mobile-menu-button');
-        const mobileMenu = document.querySelector('.mobile-menu');
 
-        mobileMenuButton.addEventListener('click', () => {
-            mobileMenu.classList.toggle('hidden');
-        });
-    </script>
 </main>
 </div>
-<x-footer></x-footer>
+<x-home.footer></x-home.footer>
 
 
 
