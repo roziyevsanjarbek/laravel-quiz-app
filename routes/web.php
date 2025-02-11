@@ -15,7 +15,7 @@ Route::get('/take-quiz', [QuizController::class,'takeQuiz'])->middleware('auth')
 //Dashboard
 Route::get('/dashboard', [DashboardController::class,'home'])->name('dashboard');
 Route::get('/dashboard/my-quizzes', [DashboardController::class,'quizzes'])->name('quizzes');
-Route::get('/dashboard/create-quiz', [DashboardController::class,'createQuizzes'])->name('create-quizzes');
+Route::get('/dashboard/create-quiz', [DashboardController::class,'createQuizzes'])->name('create-quiz');
 Route::get('/dashboard/statistics', [DashboardController::class,'statistics'])->name('statistics');
 
 //Route::get('/dashboard', function () {
