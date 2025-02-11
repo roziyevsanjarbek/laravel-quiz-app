@@ -14,7 +14,7 @@ return new class extends Migration
         Schema::create('answers', function (Blueprint $table) {
             $table->id();
             $table->foreignId('result_id')->constrained('results')->onDelete('cascade');
-
+            $table->foreignId('option_id')->constrained('options')->onDelete('cascade');
             $table->timestamps();
         });
     }
