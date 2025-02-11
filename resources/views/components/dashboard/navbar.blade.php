@@ -7,7 +7,7 @@
 
             <div class="flex items-center space-x-2">
                 <img src="https://via.placeholder.com/40" alt="Profile" class="w-10 h-10 rounded-full">
-                <span class="text-gray-700 font-medium">John Doe</span>
+                <span class="text-gray-700 font-medium">{{ auth()->user()->name; }}</span>
             </div>
         </div>
     </div>
