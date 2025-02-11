@@ -8,6 +8,6 @@ class QuizController extends Controller
 {
     public function takeQuiz()
     {
-        view('quiz.take-quiz');
+       return view('quiz.take-quiz');
     }
 }

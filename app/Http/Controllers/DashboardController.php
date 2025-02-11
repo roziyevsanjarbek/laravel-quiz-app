@@ -21,6 +21,6 @@ class DashboardController extends Controller
 
     public function statistics()
     {
-        view('dashboard.statistics');
+       return view('dashboard.statistics');
     }
 }
