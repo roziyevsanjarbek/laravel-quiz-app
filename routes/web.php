@@ -24,10 +24,15 @@ Route::prefix('dashboard')->middleware('auth')->group(function () {
     Route::get('/my-quizzes/{quiz}', [QuizController::class, 'edit'])->name('my-quizzes');
     Route::post('/my-quizzes/{quiz}/update', [QuizController::class, 'update'])->name('update-quizzes');
 
+    Route::get('/delete-quiz/{quiz}', [QuizController::class, 'destroy'])->name('delete-quiz');
 
 
 
 });
+
+
+
+
 //Route::get('/dashboard', function () {
 //    return view('dashboard');
 //})->middleware(['auth', 'verified'])->name('dashboard');
