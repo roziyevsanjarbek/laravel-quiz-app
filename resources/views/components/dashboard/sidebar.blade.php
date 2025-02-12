@@ -14,7 +14,7 @@
         <a href="{{ route('quizzes') }}" class="block p-3 mb-2 text-gray-600 {{Route::is('quizzes') ? 'bg-gray-100' : 'hover:bg-gray-100'}} rounded-lg">
             <i class="fas fa-book mr-2"></i> My Quizzes
         </a>
-        <a href="/dashboard/create-quiz" class="block p-3 mb-2 text-gray-600 hover:bg-gray-100 rounded-lg">
+        <a href="{{ route('create-quiz')}}" class="block p-3 mb-2 text-gray-600 {{Route::is('create-quiz') ? 'bg-gray-100' : 'hover:bg-gray-100'}} rounded-lg">
             <i class="fas fa-plus mr-2"></i> Create Quiz
         </a>
         <a href="{{route('statistics')}}" class="block p-3 mb-2 text-gray-600 {{Route::is('statistics') ? 'bg-gray-100' : 'hover:bg-gray-100'}} rounded-lg">

@@ -10,4 +10,9 @@ class Question extends Model
         'quiz_id',
         'name',
     ];
+
+    public function options()
+    {
+        return $this->hasMany(Option::class);
+    }
 }

@@ -20,7 +20,7 @@
                     </div>
 
                     <!-- Main Form -->
-                    <form class="space-y-4" id="quizForm" method="POST">
+                    <form class="space-y-4" id="quizForm" method="POST" action="{{ route('update-quizzes', ['quiz'=>$quiz->id]) }}">
                         @csrf
                         <!-- Quiz Details Section -->
                         <div class="bg-white p-6 rounded-lg shadow-md">
@@ -28,17 +28,17 @@
                             <div class="space-y-4">
                                 <div>
                                     <label for="title" class="block text-sm font-medium text-gray-700">Quiz Title</label>
-                                    <input type="text" id="title" name="title" placeholder="Quiz Title" required
+                                    <input type="text" id="title" name="title" placeholder="Quiz Title" value="{{ $quiz->title }}" required
                                            class="w-full px-4 py-2 border rounded-lg shadow-sm focus:border-blue-500 focus:ring-blue-500">
                                 </div>
                                 <div>
                                     <label for="description" class="block text-sm font-medium text-gray-700">Description</label>
-                                    <textarea id="description" name="description" rows="3" placeholder="Description" required
-                                              class="w-full px-4 py-2 border rounded-lg mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500"></textarea>
+                                    <textarea id="description" name="description" rows="3" placeholder="Description"  required
+                                              class="w-full px-4 py-2 border rounded-lg mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500">{{ $quiz->description }}</textarea>
                                 </div>
                                 <div>
                                     <label for="timeLimit" class="block text-sm font-medium text-gray-700">Time Limit (minutes)</label>
-                                    <input type="number" id="timeLimit" name="timeLimit" placeholder="Time Limit" min="1" required
+                                    <input type="number" id="timeLimit" name="timeLimit" placeholder="Time Limit" min="1" value="{{ $quiz->time_limit }}" required
                                            class="px-4 py-2 border rounded-lg mt-1 block w-48 rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500">
                                 </div>
                             </div>
