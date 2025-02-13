@@ -125,4 +125,12 @@ class QuizController extends Controller
         return to_route('quizzes');
     }
 
+    public function takeQuiz(Quiz $quiz)
+    {
+       return view('quiz.take-quiz', [
+           'quiz' => $quiz,
+       ]);
+
+    }
+
 }
