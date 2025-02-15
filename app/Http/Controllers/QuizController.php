@@ -14,8 +14,13 @@ class QuizController extends Controller
      */
     public function index()
     {
+        $quiz = Quiz::withCount('questions')
+            ->where('user_id', auth()->user()-id)
+                ->orderBy('created_at', 'desc')
+                    ->paginate(10);
+
         return view('dashboard.my-quizzes', [
-            'quizzes' => Quiz::withCount('questions')->orderBy('created_at', 'desc')->paginate(10),
+            'quizzes' => $quiz,
         ]);
     }
 

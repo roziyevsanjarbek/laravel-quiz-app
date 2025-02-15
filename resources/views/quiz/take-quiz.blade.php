@@ -42,11 +42,11 @@
         <!-- Quiz Header -->
         <div class="flex justify-between items-center mb-6">
             <div>
-                <h1 class="text-2xl font-bold text-gray-800">JavaScript Fundamentals Quiz</h1>
-                <p class="text-gray-600 mt-2">Test your knowledge of JavaScript basics</p>
+                <h1 class="text-2xl font-bold text-gray-800">{{ $quiz->title }}</h1>
+                <p class="text-gray-600 mt-2">{{ $quiz->description }}</p>
             </div>
             <div class="text-right">
-                <div class="text-xl font-bold text-blue-600" id="timer">20:00</div>
+                <div class="text-xl font-bold text-blue-600" id="timer">{{ $quiz->time_limit }}</div>
                 <div class="text-sm text-gray-500">Time Remaining</div>
             </div>
         </div>
@@ -73,18 +73,6 @@
                 <label class="flex items-center p-3 border rounded-lg cursor-pointer hover:bg-gray-50">
                     <input type="radio" name="answer" class="h-4 w-4 text-blue-600" value="a">
                     <span class="ml-3">undefined</span>
-                </label>
-                <label class="flex items-center p-3 border rounded-lg cursor-pointer hover:bg-gray-50">
-                    <input type="radio" name="answer" class="h-4 w-4 text-blue-600" value="b">
-                    <span class="ml-3">object</span>
-                </label>
-                <label class="flex items-center p-3 border rounded-lg cursor-pointer hover:bg-gray-50">
-                    <input type="radio" name="answer" class="h-4 w-4 text-blue-600" value="c">
-                    <span class="ml-3">string</span>
-                </label>
-                <label class="flex items-center p-3 border rounded-lg cursor-pointer hover:bg-gray-50">
-                    <input type="radio" name="answer" class="h-4 w-4 text-blue-600" value="d">
-                    <span class="ml-3">null</span>
                 </label>
             </div>
         </div>
@@ -144,8 +132,10 @@
 <script>
     let startBtn = document.getElementById('start-btn');
     startBtn.onclick = () => {
-        document.getElementById('start-card').classList.add('hidden')
-        document.getElementById('questionContainer').classList.remove('hidden')
+        document.getElementById('start-card').classList.add('hidden');
+        document.getElementById('questionContainer').classList.remove('hidden');
+        let currentQuestion = getQuestion(currentQuestionIndex);
+        displayQuestion(currentQuestion);
     }
     // Timer functionality
     function startTimer(duration, display) {
@@ -166,17 +156,30 @@
         questions = JSON.parse(`<?php echo $quiz->toJSON() ?>`).questions;
         currentQuestionIndex = 0;
 
-    function takeQuiz(index=0) {
+    function getQuestion(index=0) {
         return questions[index];
+    }
+    function displayQuestion(question){
+        console.log(question);
+        let questionElement = document.getElementById('question'),
+            optionsElement = document.getElementById('options')
+        questionElement.innerText = question.name;
+        optionsElement.innerText = question.name;
+        optionsElement.innerHTML = '';
+        question.options.forEach((option) => {
+            optionsElement.innerHTML = ` <label class="flex items-center p-3 border rounded-lg cursor-pointer hover:bg-gray-50">
+                    <input type="radio" name="answer" class="h-4 w-4 text-blue-600" value="a">
+                    <span class="ml-3">${option.name}</span>
+                </label>`
+        })
     }
     document.addEventListener('DOMContentLoaded', () => {
         const timerDisplay = document.getElementById('timer');
         startTimer(1200, timerDisplay); // 20 minutes
-
         // Add event listeners for navigation buttons
         document.getElementById('next-btn').addEventListener('click', () => {
             currentQuestionIndex++;
-            let question = takeQuiz(currentQuestionIndex);
+            let question = getQuestion(currentQuestionIndex);
             if (question) {
                 let questionElement = document.getElementById('question');
                 questionElement.textContent = question.question;
@@ -196,7 +199,7 @@
 
         document.getElementById('prev-btn').addEventListener('click', () => {
             currentQuestionIndex--;
-            let question = takeQuiz(currentQuestionIndex);
+            let question = getQuestion(currentQuestionIndex);
             if (question) {
                 let questionElement = document.getElementById('question');
                 questionElement.textContent = question.question;
@@ -220,7 +223,7 @@
             console.log(currentQuestionIndex);
             console.log(questions[currentQuestionIndex]);
             questions.splice(currentQuestionIndex, 1);
-            let question = takeQuiz(currentQuestionIndex),
+            let question = getQuestion(currentQuestionIndex),
                 questionElement = document.getElementById('question'),
                 questionContainer = document.getElementById('questionContainer');
             if (question) {
