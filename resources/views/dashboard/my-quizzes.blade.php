@@ -90,15 +90,22 @@
                         </div>
                     </div>
                 @endforeach
-                <!-- Quiz Card 2 -->
+
+
+
             </div>
         </main>
+
+        <div class="mt-4 flex justify-center">
+            {{ $quizzes->links('pagination::tailwind') }}
+        </div>
+
     </div>
 </div>
     <script>
         async function share(slug) {
             try{
-                slug = '{{ url('/take-quiz/') }}' + slug;
+                slug = '{{ url('/take-quiz/') }}' + '/' + slug;
                 await navigator.clipboard.writeText(slug);
                 alert('Content copied to clipboard')
             }catch (err) {

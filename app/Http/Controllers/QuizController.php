@@ -15,7 +15,7 @@ class QuizController extends Controller
     public function index()
     {
         return view('dashboard.my-quizzes', [
-            'quizzes' => Quiz::withCount('questions')->get()
+            'quizzes' => Quiz::withCount('questions')->orderBy('created_at', 'desc')->paginate(10),
         ]);
     }
 
@@ -125,10 +125,11 @@ class QuizController extends Controller
         return to_route('quizzes');
     }
 
-    public function takeQuiz(Quiz $quiz)
+    public function takeQuiz(string $slug)
     {
+        $quiz = Quiz::where('slug', $slug)->with('questions.options')->first();
        return view('quiz.take-quiz', [
-           'quiz' => $quiz,
+           'quiz' => $quiz->load('questions.options'),
        ]);
 
     }

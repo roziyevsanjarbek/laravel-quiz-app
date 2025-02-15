@@ -10,7 +10,7 @@ Route::get('/', [HomeController::class, 'index'])->name('welcome');
 
 Route::get('/about', [HomeController::class, 'about'])->name('about');
 
-Route::get('/take-quiz/slug', [QuizController::class, 'takeQuiz'])->middleware('auth')->name('take-quiz');
+Route::get('/take-quiz/{slug}', [QuizController::class, 'takeQuiz'])->middleware('auth')->name('take-quiz');
 
 //Dashboard
 Route::prefix('dashboard')->middleware('auth')->group(function () {
