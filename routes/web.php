@@ -10,25 +10,29 @@ Route::get('/', [HomeController::class, 'index'])->name('welcome');
 
 Route::get('/about', [HomeController::class, 'about'])->name('about');
 
-Route::get('/take-quiz/{slug}', [QuizController::class, 'takeQuiz'])->middleware('auth')->name('take-quiz');
 
 //Dashboard
-Route::prefix('dashboard')->middleware('auth')->group(function () {
-    Route::get('/', [DashboardController::class, 'home'])->name('dashboard');
-    Route::get('/my-quizzes', [QuizController::class, 'index'])->name('quizzes');
-    Route::get('/statistics', [DashboardController::class, 'statistics'])->name('statistics');
 
-    Route::get('/create-quiz', [QuizController::class, 'create'])->name('create-quiz');
-    Route::post('/create-quiz', [QuizController::class, 'store'])->name('store-quiz');
+Route::middleware('auth')->group(function () {
+    Route::prefix('dashboard')->middleware('auth')->group(function () {
+        Route::get('/', [DashboardController::class, 'home'])->name('dashboard');
+        Route::get('/my-quizzes', [QuizController::class, 'index'])->name('quizzes');
+        Route::get('/statistics', [DashboardController::class, 'statistics'])->name('statistics');
 
-    Route::get('/my-quizzes/{quiz}', [QuizController::class, 'edit'])->name('my-quizzes');
-    Route::post('/my-quizzes/{quiz}/update', [QuizController::class, 'update'])->name('update-quizzes');
+        Route::get('/create-quiz', [QuizController::class, 'create'])->name('create-quiz');
+        Route::post('/create-quiz', [QuizController::class, 'store'])->name('store-quiz');
 
-    Route::get('/delete-quiz/{quiz}', [QuizController::class, 'destroy'])->name('delete-quiz');
+        Route::get('/my-quizzes/{quiz}', [QuizController::class, 'edit'])->name('my-quizzes');
+        Route::post('/my-quizzes/{quiz}/update', [QuizController::class, 'update'])->name('update-quizzes');
 
+        Route::get('/delete-quiz/{quiz}', [QuizController::class, 'destroy'])->name('delete-quiz');
 
-
+    });
+    Route::get('/take-quiz/{slug}', [QuizController::class, 'startQuiz'])->name('start-quiz');
+    Route::post('/take-quiz/{slug}', [QuizController::class, 'takeQuiz'])->name('take-quiz');
 });
+
+
 
 
 

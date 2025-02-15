@@ -3,7 +3,9 @@
 namespace App\Http\Controllers;
 
 
+use App\Models\Answer;
 use App\Models\Quiz;
+use App\Models\Result;
 use Illuminate\Http\Request;
 use Illuminate\Support\Str;
 
@@ -15,9 +17,9 @@ class QuizController extends Controller
     public function index()
     {
         $quiz = Quiz::withCount('questions')
-            ->where('user_id', auth()->user()-id)
+            ->where('user_id', auth()->user()->id)
                 ->orderBy('created_at', 'desc')
-                    ->paginate(10);
+                    ->paginate(9);
 
         return view('dashboard.my-quizzes', [
             'quizzes' => $quiz,
@@ -130,13 +132,56 @@ class QuizController extends Controller
         return to_route('quizzes');
     }
 
-    public function takeQuiz(string $slug)
+    public function startQuiz(string $slug)
     {
         $quiz = Quiz::where('slug', $slug)->with('questions.options')->first();
        return view('quiz.take-quiz', [
            'quiz' => $quiz->load('questions.options'),
        ]);
 
+    }
+
+    public function takeQuiz(string $slug, Request $request)
+    {
+        $validator = $request->validate([
+            'answer' => 'required|integer|exists:options,id',
+        ]);
+        $user_id = auth()->id();
+        $quiz = Quiz::where('slug', $slug)->first();
+        $result = Result::where('quiz_id', $quiz->id)
+            ->where('user_id',$user_id)
+                ->first();
+        if(!$result){
+            $result = Result::create([
+                'quiz_id' => $quiz->id,
+                'user_id' => $user_id,
+                'started_at' => now(),
+            ]);
+            Answer::create([
+                'result_id' => $result->id,
+                'option_id' => $validator['answer'],
+            ]);
+
+            $answeredOptionIds = Answer::where('result_id', $result->id)
+                ->pluck('option_id')
+                ->toArray();
+
+            $quiz = Quiz::with(['questions.options' => function ($query) use ($answeredOptionIds) {
+                $query->whereNotIn('options.id', $answeredOptionIds);
+            }])->where('id', $quiz->id)->first();
+
+            return view('quiz.take-quiz', [
+                'quiz' => $quiz,
+            ]);
+
+        }
+        if($result->finished_at >= now()){
+            return 'Seni vaqting tugagan';
+        }
+        Answer::create([
+            'result_id' => $result->id,
+            'option_id' => $validator['answer'],
+        ]);
     }
 
 }
