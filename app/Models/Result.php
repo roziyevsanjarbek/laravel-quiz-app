@@ -14,4 +14,9 @@ class Result extends Model
     ];
 
     public $timestamps = false;
+
+    public function quiz()
+    {
+        return $this->belongsTo(Quiz::class);
+    }
 }

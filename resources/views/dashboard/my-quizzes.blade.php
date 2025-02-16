@@ -105,7 +105,7 @@
     <script>
         async function share(slug) {
             try{
-                slug = '{{ url('/take-quiz/') }}' + '/' + slug;
+                slug = '{{ url('/show-quiz/') }}' + '/' + slug;
                 await navigator.clipboard.writeText(slug);
                 alert('Content copied to clipboard')
             }catch (err) {

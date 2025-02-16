@@ -4,6 +4,8 @@ namespace App\Http\Controllers;
 
 
 use App\Models\Answer;
+use App\Models\Option;
+use App\Models\Question;
 use App\Models\Quiz;
 use App\Models\Result;
 use Illuminate\Http\Request;
@@ -18,8 +20,8 @@ class QuizController extends Controller
     {
         $quiz = Quiz::withCount('questions')
             ->where('user_id', auth()->user()->id)
-                ->orderBy('created_at', 'desc')
-                    ->paginate(9);
+            ->orderBy('created_at', 'desc')
+            ->paginate(9);
 
         return view('dashboard.my-quizzes', [
             'quizzes' => $quiz,
@@ -56,7 +58,7 @@ class QuizController extends Controller
         ]);
 
         foreach ($validator['questions'] as $question) {
-           $questionItem = $quiz->questions()->create([
+            $questionItem = $quiz->questions()->create([
                 'name' => $question['quiz'],
             ]);
             foreach ($question['options'] as $optionKey => $option) {
@@ -65,16 +67,28 @@ class QuizController extends Controller
                     'is_correct' => $question['correct'] == $optionKey ? 1 : 0,
                 ]);
             }
-    }
+        }
         return to_route('quizzes', [$quiz]);
-}
+    }
 
     /**
      * Display the specified resource.
      */
-    public function show(string $id)
+    public function show(string $slug)
     {
-        //
+        $quiz = Quiz::where('slug', $slug)->first();
+        $result = Result::query()
+            ->where('quiz_id', $quiz->id)
+            ->where('user_id', auth()->id())
+            ->first();
+
+        if (!$result) {
+            return view('quiz.show-quiz', [
+                'quiz' => $quiz,
+            ]);
+        }
+        return 'Ey !';
+
     }
 
     /**
@@ -135,9 +149,15 @@ class QuizController extends Controller
     public function startQuiz(string $slug)
     {
         $quiz = Quiz::where('slug', $slug)->with('questions.options')->first();
-       return view('quiz.take-quiz', [
-           'quiz' => $quiz->load('questions.options'),
-       ]);
+        $result = Result::create([
+            'quiz_id' => $quiz->id,
+            'user_id' => auth()->id(),
+            'started_at' => now(),
+            'finished_at' => date('Y-m-d H:i:s', strtotime('+' . $quiz->time_limit . ' minutes')),
+        ]);
+        return view('quiz.start-quiz', [
+            'quiz' => $quiz->load('questions.options'),
+        ]);
 
     }
 
@@ -146,42 +166,44 @@ class QuizController extends Controller
         $validator = $request->validate([
             'answer' => 'required|integer|exists:options,id',
         ]);
+
         $user_id = auth()->id();
         $quiz = Quiz::where('slug', $slug)->first();
+
         $result = Result::where('quiz_id', $quiz->id)
-            ->where('user_id',$user_id)
-                ->first();
-        if(!$result){
-            $result = Result::create([
-                'quiz_id' => $quiz->id,
-                'user_id' => $user_id,
-                'started_at' => now(),
-            ]);
-            Answer::create([
-                'result_id' => $result->id,
-                'option_id' => $validator['answer'],
-            ]);
+            ->where('user_id', $user_id)
+            ->first();
 
-            $answeredOptionIds = Answer::where('result_id', $result->id)
-                ->pluck('option_id')
-                ->toArray();
-
-            $quiz = Quiz::with(['questions.options' => function ($query) use ($answeredOptionIds) {
-                $query->whereNotIn('options.id', $answeredOptionIds);
-            }])->where('id', $quiz->id)->first();
-
-            return view('quiz.take-quiz', [
-                'quiz' => $quiz,
-            ]);
-
-        }
-        if($result->finished_at >= now()){
-            return 'Seni vaqting tugagan';
-        }
         Answer::create([
             'result_id' => $result->id,
             'option_id' => $validator['answer'],
         ]);
+
+        if ($result->finished_at <= now()) {
+            return 'Seni vaqting tugagan';
+        }
+
+        $answers = Answer::query()
+            ->where('result_id', $result->id)
+            ->get();
+
+        $options = Option::query()
+            ->select('question_id')
+            ->whereIn('id', $answers->pluck('option_id'))
+            ->get();
+
+        $questions = Question::query()
+            ->where('quiz_id', $quiz->id)
+            ->whereNotIn('id', $options->pluck('question_id'))
+            ->with('options')
+            ->get();
+
+        return view('quiz.take-quiz', [
+            'quiz' => $quiz,
+            'questions' => $questions,
+        ]);
+
+
     }
 
 }

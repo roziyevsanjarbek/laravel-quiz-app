@@ -129,7 +129,7 @@
 
         // Initialize quiz
         let options = document.getElementById('options'),
-            questions = JSON.parse(`<?php echo $questions->toJSON() ?>`);
+            questions = JSON.parse(`<?php echo $quiz->toJSON() ?>`).questions;
         currentQuestionIndex = 0;
 
         function getQuestion(index=0) {
