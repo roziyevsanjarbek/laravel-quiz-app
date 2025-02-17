@@ -9,6 +9,7 @@ use App\Models\Question;
 use App\Models\Quiz;
 use App\Models\Result;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Date;
 use Illuminate\Support\Str;
 
 class QuizController extends Controller
@@ -18,10 +19,15 @@ class QuizController extends Controller
      */
     public function index()
     {
+        $perPage = request('perPage', 6);
         $quiz = Quiz::withCount('questions')
             ->where('user_id', auth()->user()->id)
             ->orderBy('created_at', 'desc')
-            ->paginate(9);
+            ->paginate($perPage);
+        if (request()->has('search')) {
+            $quiz->where('title', 'like', '%' . request('search') . '%')
+                ->orWhere('description', 'like', '%' . request('search') . '%');
+        }
 
         return view('dashboard.my-quizzes', [
             'quizzes' => $quiz,
@@ -174,14 +180,17 @@ class QuizController extends Controller
             ->where('user_id', $user_id)
             ->first();
 
+        if ($result->finished_at <= now()) {
+            return 'Seni vaqting tugagan';
+        }
+//        $result->finished_at = now();
+//        $result->save();
+
         Answer::create([
             'result_id' => $result->id,
             'option_id' => $validator['answer'],
         ]);
 
-        if ($result->finished_at <= now()) {
-            return 'Seni vaqting tugagan';
-        }
 
         $answers = Answer::query()
             ->where('result_id', $result->id)
@@ -198,12 +207,26 @@ class QuizController extends Controller
             ->with('options')
             ->get();
 
-        return view('quiz.take-quiz', [
-            'quiz' => $quiz,
-            'questions' => $questions,
+        if (count($questions)) {
+            return view('quiz.take-quiz', [
+                'quiz' => $quiz,
+                'questions' => $questions,
+            ]);
+        }
+        $correctOptionCount = Option::query()
+            ->select('question_id')
+            ->where('is_correct', 1)
+            ->whereIn('id', $answers->pluck('option_id'))
+            ->count();
+
+        return view('quiz.result-quiz', [
+            'quiz' => $quiz->withCount('questions')->first(),
+            'correctOptionCount' => $correctOptionCount,
+            'time_taken' => Date::createFromFormat('Y-m-d H:i:s', $result->finished_at)->diff($result->started_at),
         ]);
-
-
     }
 
 }
+
+
+

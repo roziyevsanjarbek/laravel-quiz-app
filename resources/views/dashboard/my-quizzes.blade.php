@@ -97,6 +97,9 @@
         </main>
 
         <div class="mt-4 flex justify-center">
+            <a href="{{ url()->current() . '?perPage=10' }}">10</a>
+            <a href="{{ url()->current() . '?perPage=20' }}">20</a>
+            <a href="{{ url()->current() . '?perPage=50' }}">50</a>
             {{ $quizzes->links('pagination::tailwind') }}
         </div>
 
