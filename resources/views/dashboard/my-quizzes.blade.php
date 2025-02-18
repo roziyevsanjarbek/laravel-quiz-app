@@ -1,10 +1,10 @@
 <x-dashboard.header></x-dashboard.header>
-<div class="bg-gray-100">
+<body class="bg-gray-100">
 <div class="flex min-h-screen">
     <!-- Sidebar -->
     <x-dashboard.sidebar></x-dashboard.sidebar>
     <!-- Main Content -->
-    <div class="flex-1">
+    <div class="flex-1 flex flex-col">
         <!-- Top Navigation -->
         <x-dashboard.navbar></x-dashboard.navbar>
 
@@ -14,9 +14,9 @@
             <div class="flex justify-between items-center mb-6">
                 <h2 class="text-2xl font-bold text-gray-800">My Quizzes</h2>
                 <div class="flex space-x-4">
-                    <button class="bg-indigo-600 text-white px-4 py-2 rounded-lg hover:bg-indigo-700">
+                    <a href="{{ route('create-quiz') }}" class="bg-indigo-600 text-white px-4 py-2 rounded-lg hover:bg-indigo-700">
                         Create New Quiz
-                    </button>
+                    </a>
                     <div class="flex border rounded-lg">
                         <button class="px-3 py-2 bg-white border-r">
                             <svg class="w-5 h-5" fill="currentColor" viewBox="0 0 20 20">
@@ -50,7 +50,6 @@
             <!-- Quiz Grid -->
             <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
                 <!-- Quiz Card 1 -->
-
                 @foreach($quizzes as $quiz)
                     <div class="bg-white rounded-lg shadow-sm p-6">
                         <div class="flex justify-between items-start mb-4">
@@ -68,8 +67,8 @@
                         </div>
                         <p class="text-gray-600 mb-4">{{ $quiz->description }}</p>
                         <div class="flex justify-between items-center mb-4">
-                            <span class="text-sm text-gray-500">{{ $quiz->question_count }} Questions</span>
-                            <span class="text-sm text-gray-500">{{ $quiz->timeLimit }} minutes</span>
+                            <span class="text-sm text-gray-500">{{ $quiz->questions_count }} Questions</span>
+                            <span class="text-sm text-gray-500">{{ $quiz->time_limit }} minutes</span>
                         </div>
                         <div class="mb-4">
                             <div class="w-full bg-gray-200 rounded-full h-2">
@@ -78,41 +77,29 @@
                             <span class="text-sm text-gray-500">75% Completion Rate</span>
                         </div>
                         <div class="flex justify-between">
-                            <a href="{{ route('my-quizzes', [$quiz]) }}" class="text-indigo-600 hover:text-indigo-800">Edit</a>
-                            <button class="text-green-600 hover:text-green-800">View Results</button>
+                            <a href="{{ route('update-quiz', ['quiz'=>$quiz->id]) }}" class="text-indigo-600 hover:text-indigo-800">Edit</a>
                             <button
                                 class="text-green-600 hover:text-green-100 rounded p-1 hover:bg-blue-500"
                                 onclick="share('{{ $quiz->slug }}')"
                             >Share</button>
-                            <form action="" method="GET">
-                                <a href="{{ route('delete-quiz', ['quiz' => $quiz->id]) }}" class="text-red-600 hover:text-red-800">Delete</a>
-                            </form>
+                            <a href="{{ route('delete-quiz', ['quiz'=>$quiz->id]) }}" class="text-red-600 hover:text-red-800">Delete</a>
                         </div>
                     </div>
                 @endforeach
-
-
-
+            </div>
+            <div class="my-3 flex items-center flex-col">
+                {{ $quizzes->links() }}
             </div>
         </main>
-
-        <div class="mt-4 flex justify-center">
-            <a href="{{ url()->current() . '?perPage=10' }}">10</a>
-            <a href="{{ url()->current() . '?perPage=20' }}">20</a>
-            <a href="{{ url()->current() . '?perPage=50' }}">50</a>
-            {{ $quizzes->links('pagination::tailwind') }}
-        </div>
-
     </div>
-</div>
     <script>
         async function share(slug) {
-            try{
-                slug = '{{ url('/show-quiz/') }}' + '/' + slug;
+            try {
+                slug = '{{ url('/show-quiz/') }}/' + slug;
                 await navigator.clipboard.writeText(slug);
-                alert('Content copied to clipboard')
-            }catch (err) {
-                console.error('Filed to copy', err );
+                alert('Content copied to clipboard');
+            } catch (err) {
+                console.error('Failed to copy: ', err);
             }
         }
     </script>
